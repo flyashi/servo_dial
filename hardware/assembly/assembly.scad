@@ -1,4 +1,5 @@
 use <../parts/face.scad>
+use <../parts/cover.scad>
 use <../external/sg90.scad>
 use <../external/seeed_xiao_esp32c3.scad>
 
@@ -14,6 +15,8 @@ module servo_on_face() {
     translate([0,30,6.5])
 
     seeed_xiao_esp32c3();
+
+    translate([0,0,2.6]) cover();
 }
 
 servo_on_face();

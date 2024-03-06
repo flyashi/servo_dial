@@ -27,7 +27,9 @@ servo_2_offset = 15;
 mount_d = 6;
 mount_h = 30; // check me!
 mount_hole_h = mount_h - 5;  // leave 5mm at the bottom? too much?
+// from here: https://mae.ufl.edu/designlab/Lab%20Assignments/EML2322L%20Tap%20Drill%20Chart.pdf
 mount_hold_d = 3.45; // #8 75%
+
 
 mount_hole_dist = 60;
 
@@ -117,7 +119,6 @@ module face() {
         
         // module holder
         rotate([0,0,60])
-
         translate([-9.25,-19,face_th])
             module_holder();
     }
