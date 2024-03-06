@@ -1,5 +1,5 @@
 face_d=90;
-face_th=3;
+face_th=2.5;
 
 
 // servo calculations
@@ -11,17 +11,39 @@ servo_len=22.8;
 servo_left_flange_hole_to_hole = servo_flange_len+servo_len - servo_width/2 - servo_flange_hole_to_edge_dist;
 servo_right_flange_hole_to_hole = servo_width/2 + servo_flange_len - servo_flange_hole_to_edge_dist;
 
-servo_holder_h=4.3;
+servo_1_hole_d = 13;
+servo_2_hole_d = 10;
+
+servo_1_holder_h=4.3;
 servo_holder_d=4;
+
+servo_2_holder_h=8.6;
 
 servo_holder_hole_h=10;
 servo_holder_hole_d=2;
 
-module servo_support() {
+servo_2_offset = 15;
+
+mount_d = 6;
+mount_h = 30; // check me!
+mount_hole_h = mount_h - 5;  // leave 5mm at the bottom? too much?
+mount_hold_d = 3.45; // #8 75%
+
+mount_hole_dist = 60;
+
+module servo_support(len) {
     difference() {
-        cylinder(h=servo_holder_h,d=4,$fn=20);
-        translate([0,0,servo_holder_h-servo_holder_hole_h])
+        cylinder(h=len,d=servo_holder_d,$fn=20);
+        translate([0,0,len-servo_holder_hole_h])
             cylinder(h=servo_holder_hole_h+0.1,d=servo_holder_hole_d,$fn=20);
+    }
+}
+
+module rear_mount(len) {
+    difference() {
+        cylinder(h=len,d=mount_d,$fn=20);
+        translate([0,0,len-mount_hole_h])
+            cylinder(h=mount_hole_h+0.1,d=mount_hold_d,$fn=20);
     }
 }
 
@@ -33,13 +55,34 @@ module face() {
             cylinder(h=face_th,d=face_d,$fn=100);
             // cutout for servo 1
             translate([0,0,-0.1])
-                cylinder(d=13,h=face_th+0.2,$fn=50);
+                cylinder(d=servo_1_hole_d,h=face_th+0.2,$fn=50);
+            translate([0,-8,-0.1])
+                cylinder(d=7,h=face_th+0.2,$fn=50);
+            translate([-3.5,-8,-0.1]) 
+                cube([7,7,face_th+0.2]);
+            // cutout for servo 2
+            translate([-servo_2_offset,0,-0.1])
+                cylinder(d=servo_2_hole_d,h=face_th+0.2,$fn=50);
+            
         }
-        // servo support
-        translate([-servo_left_flange_hole_to_hole,0,face_th])
-            servo_support();
-        translate([servo_right_flange_hole_to_hole,0,face_th])
-            servo_support();
+        // servo supports - servo 1
+        translate([0, -servo_left_flange_hole_to_hole,face_th])
+            servo_support(servo_1_holder_h);
+        translate([0, servo_right_flange_hole_to_hole,face_th])
+            servo_support(servo_1_holder_h);
+
+        // servo supports - servo 2
+        translate([-servo_2_offset, -servo_left_flange_hole_to_hole,face_th])
+            servo_support(servo_2_holder_h);
+        translate([-servo_2_offset, servo_right_flange_hole_to_hole,face_th])
+            servo_support(servo_2_holder_h);
+        
+        // rear mounts
+        translate([-mount_hole_dist/2, 0, face_th])
+            rear_mount(mount_h);
+        translate([mount_hole_dist/2, 0, face_th])
+            rear_mount(mount_h);
+            
     }
 }
 

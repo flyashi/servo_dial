@@ -16,6 +16,9 @@ servo_flange_hole_w=1;
 servo_flange_hole_l=1.5;
 servo_head_hole_d = 2;
 
+servo_extra_bulge_d=6;  // measured
+servo_extra_bulge_overlap=2;  // guesssed
+
 maincolor="steelblue";
 
 module sg90() {
@@ -40,6 +43,10 @@ module sg90() {
                 cylinder(d=servo_head_d,h=servo_head_l,$fn=20);
                 cylinder(d=servo_head_hole_d,h=servo_head_l + 0.1, $fn=10);
             }
+        color(maincolor) translate([servo_l-servo_w-servo_extra_bulge_d/2+servo_extra_bulge_overlap,servo_w/2,servo_top_h])
+            cylinder(d=servo_extra_bulge_d,h=(servo_total_h-servo_top_h-servo_head_l),$fn=50);
+        color(maincolor) translate([servo_l-servo_w-servo_extra_bulge_d/2+servo_extra_bulge_overlap,servo_w/2-servo_extra_bulge_d/2,servo_top_h])
+            cube([servo_extra_bulge_d,servo_extra_bulge_d,(servo_total_h-servo_top_h-servo_head_l)]);
     }
 }
 
