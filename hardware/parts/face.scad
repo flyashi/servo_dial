@@ -20,7 +20,7 @@ servo_holder_d=4;
 servo_2_holder_h=8.6;
 
 servo_holder_hole_h=10;
-servo_holder_hole_d=2;
+servo_holder_hole_d=1.5;
 
 servo_2_offset = 15;
 
