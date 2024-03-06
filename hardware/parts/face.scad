@@ -47,6 +47,38 @@ module rear_mount(len) {
     }
 }
 
+module module_holder() {
+    union() {
+        //cube([15,2.5,10]);
+        mw=18.5;
+        rotate([90,0,0]) linear_extrude(15) {
+            polygon(points=[
+                [0,0],
+                [0,2],
+                [1,3],
+                [0,4],
+                [0,5],
+                [1,6],
+                [0,7],
+                [-2,7],
+                [-2,0]
+            ]);
+            polygon(points=[
+                [mw,0],
+                [mw,2],
+                [mw-1,3],
+                [mw,4],
+                [mw,5],
+                [mw-1,6],
+                [mw,7],
+                [mw+2,7],
+                [mw+2,0]
+            ]);
+        }
+        translate([-2,0,0]) cube([mw+4,2,5]);
+    }
+}
+
 module face() {
     union() {
         // face
@@ -82,7 +114,12 @@ module face() {
             rear_mount(mount_h);
         translate([mount_hole_dist/2, 0, face_th])
             rear_mount(mount_h);
-            
+        
+        // module holder
+        rotate([0,0,60])
+
+        translate([-9.25,-19,face_th])
+            module_holder();
     }
 }
 
